@@ -1,10 +1,14 @@
 import React from 'react';
-import HomePage from './pages/homepage';
+import { Outlet } from 'react-router-dom';
 
 import './app.scss';
 
 const App: React.FC = () => {
-  return <HomePage />;
+  return (
+    <div>
+      <Outlet />
+    </div>
+  );
 };
 
 export default App;
