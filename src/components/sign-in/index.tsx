@@ -1,4 +1,5 @@
 import React, { SyntheticEvent, useState } from 'react';
+import { signInWithGoogle } from '../../firebase/firebase.utils';
 import Button from '../button';
 import Input from '../input';
 import './styles.scss';
@@ -41,9 +42,14 @@ const SignIn: React.FC = () => {
           handleChange={onChange}
           label="password"
         />
-        <Button type="submit" value="submit form">
-          Sign In
-        </Button>
+        <div className="buttons">
+          <Button type="submit" value="submit form">
+            Sign In
+          </Button>
+          <Button isGoogleSignIn onClick={signInWithGoogle}>
+            Sign In with Google
+          </Button>
+        </div>
       </form>
     </div>
   );
