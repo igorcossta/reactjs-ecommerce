@@ -12,7 +12,6 @@ const App: React.FC = () => {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
-      console.log(currentUser);
     });
   }, [currentUser]);
 

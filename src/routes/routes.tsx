@@ -14,7 +14,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ShopPage />} />
-          <Route path="/signin" element={<SignInSignUp />} />
+          <Route path="signin" element={<SignInSignUp />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>
