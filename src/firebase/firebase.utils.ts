@@ -1,5 +1,10 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  User,
+} from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
 const config = {
@@ -23,11 +28,15 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () =>
   signInWithPopup(auth, provider).then(() => {
-    createUserProfile();
+    createUserProfile(auth.currentUser);
   });
 
-async function createUserProfile() {
-  const user = auth.currentUser;
+export async function createUserProfile(
+  user: User | null,
+  options?: {
+    displayName?: string;
+  }
+) {
   const docRef = doc(db, `users/${user?.uid}`);
   const snapshot = await getDoc(docRef);
 
@@ -36,9 +45,12 @@ async function createUserProfile() {
     await setDoc(
       docRef,
       {
-        displayName: user?.displayName,
+        displayName: options ? options.displayName : user?.displayName,
         email: user?.email,
-        photoURL: user?.photoURL,
+        photoURL:
+          user?.photoURL === null
+            ? `https://avatars.dicebear.com/api/initials/${user.email}.svg`
+            : user?.photoURL,
         uid: user?.uid,
       },
       { merge: true }

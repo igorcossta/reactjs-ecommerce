@@ -1,5 +1,6 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { SyntheticEvent, useState } from 'react';
-import { signInWithGoogle } from '../../firebase/firebase.utils';
+import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 import Button from '../button';
 import Input from '../input';
 import './styles.scss';
@@ -10,6 +11,9 @@ const SignIn: React.FC = () => {
 
   const onSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password).catch((error) =>
+      console.log(error)
+    );
     setEmail('');
     setPassword('');
   };
