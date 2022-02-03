@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { User } from 'firebase/auth';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import './app.scss';
 import Header from './components/header';
-import { auth } from './firebase/firebase.utils';
+import AuthProvider from './contexts/authentication';
 
 const App: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>();
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-    });
-  }, [currentUser]);
-
   return (
     <div>
-      <Header currentUser={currentUser} />
+      <AuthProvider>
+        <Header />
+      </AuthProvider>
       <Outlet />
     </div>
   );

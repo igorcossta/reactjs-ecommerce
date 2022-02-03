@@ -3,13 +3,10 @@ import { Link } from 'react-router-dom';
 import './styles.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.utils';
-import { User } from 'firebase/auth';
+import { useAuthState } from '../../contexts';
 
-interface Props {
-  currentUser: User | null | undefined;
-}
-
-const Header: React.FC<Props> = ({ currentUser }) => {
+const Header: React.FC = () => {
+  const { signed } = useAuthState();
   return (
     <div className="header">
       <Link className="logo-container" to="/">
@@ -22,7 +19,7 @@ const Header: React.FC<Props> = ({ currentUser }) => {
         <Link className="option" to="/contact">
           CONTACT
         </Link>
-        {currentUser ? (
+        {signed ? (
           <div className="option" onClick={() => auth.signOut()}>
             SIGN OUT
           </div>
