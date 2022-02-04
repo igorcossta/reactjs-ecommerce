@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { SyntheticEvent, useState } from 'react';
-import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
+import { auth, signInWithGoogle } from '../../firebase/firebase.config';
 import Button from '../button';
 import Input from '../input';
 import './styles.scss';
@@ -11,11 +11,20 @@ const SignIn: React.FC = () => {
 
   const onSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password).catch((error) =>
-      console.log(error)
-    );
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {})
+      .catch((error) => alert('something went wrong with your authentication'));
+
     setEmail('');
     setPassword('');
+  };
+
+  const googleSignIn = () => {
+    signInWithGoogle()
+      .then((res) => {})
+      .catch((error) =>
+        alert('something went wrong with your google authentication')
+      );
   };
 
   const onChange = (e: React.FormEvent<HTMLInputElement>): void => {
@@ -50,7 +59,7 @@ const SignIn: React.FC = () => {
           <Button type="submit" value="submit form">
             Sign In
           </Button>
-          <Button isGoogleSignIn onClick={signInWithGoogle}>
+          <Button isGoogleSignIn onClick={googleSignIn}>
             Sign In with Google
           </Button>
         </div>

@@ -1,6 +1,8 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { SyntheticEvent, useState } from 'react';
-import { auth, createUserProfile } from '../../firebase/firebase.utils';
+import { Profile } from '../../commom/user.type';
+import { auth } from '../../firebase/firebase.config';
+import { createUserProfile } from '../../firebase/firebase.utils';
 import Button from '../button';
 import Input from '../input';
 import './styles.scss';
@@ -18,19 +20,30 @@ const SignUp: React.FC = () => {
       alert('password dont match');
       return;
     }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const { user } = userCredential;
-        await createUserProfile(user, { displayName: displayName });
+
+        const profile = {
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          uid: user.uid,
+        } as Profile;
+
+        await createUserProfile(profile, { displayName: displayName })
+          .then(() => {})
+          .catch((error) =>
+            alert('something went wrong saving your data on database')
+          );
 
         setDisplayName('');
         setEmail('');
         setPassword('');
         setconfirmPassword('');
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => alert('something went wrong with your registration'));
   };
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {

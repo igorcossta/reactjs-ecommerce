@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
-import { auth } from '../../firebase/firebase.utils';
-import { useAuthState } from '../../contexts';
+import { Profile } from '../../commom/user.type';
+import { auth } from '../../firebase/firebase.config';
+import './styles.scss';
 
-const Header: React.FC = () => {
-  const { signed } = useAuthState();
+export interface Props {
+  currentUser: Profile;
+}
+
+const Header: React.FC<Props> = ({ currentUser }) => {
   return (
     <div className="header">
       <Link className="logo-container" to="/">
@@ -19,7 +22,7 @@ const Header: React.FC = () => {
         <Link className="option" to="/contact">
           CONTACT
         </Link>
-        {signed ? (
+        {currentUser.uid ? (
           <div className="option" onClick={() => auth.signOut()}>
             SIGN OUT
           </div>
