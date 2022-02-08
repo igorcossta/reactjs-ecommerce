@@ -11,12 +11,22 @@
   right: 40px;
   z-index: 5;
 
+  .empty-message {
+    font-size: 18px;
+    margin: 50px auto;
+  }
+
   .cart-items {
     height: 300px;
     display: flex;
     flex-direction: column;
     overflow: scroll;
-    scrollbar-width: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: visible;
+    }
   }
 
   button {

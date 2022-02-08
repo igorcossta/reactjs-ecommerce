@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.config';
 import { useAppSelector } from '../../hooks/redux.hooks';
+import { selectCartHidden } from '../../redux/cart/cart.selector';
+import { selectCurrentUser } from '../../redux/user/user.selector';
 import Dropdown from '../cart-dropdown';
 import CartIcon from '../cart-icon';
 import './styles.scss';
 
 const Header: React.FC = () => {
-  const currentUser = useAppSelector((state) => state.user.currentUser);
-  const hidden = useAppSelector((state) => state.cart.hidden);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const hidden = useAppSelector(selectCartHidden);
   return (
     <div className="header">
       <Link className="logo-container" to="/">
