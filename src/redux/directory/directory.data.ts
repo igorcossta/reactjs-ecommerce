@@ -6,7 +6,7 @@ export interface Props {
   size?: string;
 }
 
-const SECTION_DATA: Props[] = [
+const STATE: Props[] = [
   {
     title: 'hats',
     imageUrl:
@@ -46,4 +46,4 @@ const SECTION_DATA: Props[] = [
   },
 ];
 
-export default SECTION_DATA;
+export default STATE;

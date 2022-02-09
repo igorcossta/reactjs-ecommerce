@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppDispatch } from '../../hooks/redux.hooks';
 import { addItemToCart } from '../../redux/cart/cart.action';
-import { CartItem } from '../../redux/cart/cart.interface';
 import Button from '../button';
 import './styles.scss';
 
