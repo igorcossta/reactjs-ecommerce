@@ -4,7 +4,7 @@ import { RootState } from '../store';
 import memoize from 'lodash.memoize';
 
 export const selectAllCollections = createSelector(
-  (state: RootState) => state.collection,
+  (state: RootState) => state.shop,
   (collections) => collections
 );
 
