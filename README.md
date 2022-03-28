@@ -15,7 +15,7 @@ Category Page             |  Login Page
 <br />
 
 <p align="center">
-  To view the website click <a href="https://crwn-cossta.herokuapp.com/shop">HERE</a>
+  Click <a href="https://crwn-cossta.herokuapp.com" target="_blank">HERE</a> to view the live preview
 </p>
   
 <h2 align="center">⚠️ Notes</h2>
