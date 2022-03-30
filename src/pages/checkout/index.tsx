@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import CheckoutItem from '../../components/checkout-item';
 import StripeButton from '../../components/stripe-button';
 import { useAppSelector } from '../../hooks/redux.hooks';
@@ -37,12 +37,16 @@ const CheckoutPage: React.FC = () => {
       <div className="total">
         <span>${cartTotal}</span>
       </div>
-      <div className="test-warning">
-        *Please use the following test credit card for payments*
-        <br />
-        4242 4242 4242 4242 - Exp 01/23 - CVV 123
-      </div>
-      <StripeButton price={cartTotal} />
+      {cartItems.length >= 1 && (
+        <Fragment>
+          <div className="test-warning">
+            *Please use the following test credit card for payments*
+            <br />
+            4242 4242 4242 4242 - Exp 01/23 - CVV 123
+          </div>
+          <StripeButton price={cartTotal} />
+        </Fragment>
+      )}
     </div>
   );
 };
