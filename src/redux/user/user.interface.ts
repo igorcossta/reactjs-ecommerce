@@ -1,12 +1,17 @@
-import { Profile } from '../../commom/user.type';
-
-export interface Action {
+export interface UserAction {
   type: string;
   payload: {
-    credentials: Profile;
+    user?: User;
   };
 }
 
-export interface UserState {
-  currentUser: Profile | null;
+export interface UserReducerState {
+  currentUser: User | undefined;
+}
+
+export interface User {
+  displayName: string;
+  email: string;
+  photoURL: string;
+  uid: string;
 }

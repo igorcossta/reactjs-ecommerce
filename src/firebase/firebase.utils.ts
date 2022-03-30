@@ -1,28 +1,94 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { Options } from '../commom/options.type';
-import { Profile } from '../commom/user.type';
-import { db } from './firebase.config';
+import {
+  createUserWithEmailAndPassword,
+  NextOrObserver,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut as signOutFirebase,
+  User as UserFirebase,
+} from 'firebase/auth';
+import {
+  collection,
+  doc,
+  getDoc,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  setDoc,
+  writeBatch,
+} from 'firebase/firestore';
+import { User } from '../redux/user/user.interface';
+import { auth, db } from './firebase.config';
 
-export const createUserProfile = async (user: Profile, options?: Options) => {
-  const docRef = doc(db, `users/${user?.uid}`);
-  const snapshot = await getDoc(docRef);
+export const signOut = () => signOutFirebase(auth);
 
-  if (!snapshot.exists()) {
-    return await setDoc(
-      docRef,
-      {
-        displayName: options?.displayName
-          ? options.displayName
-          : user.displayName,
-        email: user.email,
-        photoURL:
-          user.photoURL === null
-            ? `https://avatars.dicebear.com/api/initials/${user.email}.svg`
-            : user.photoURL,
-        uid: user.uid,
-      },
-      { merge: true }
-    );
+export const signUpWithEmail = async (email: string, password: string) =>
+  await createUserWithEmailAndPassword(auth, email, password);
+
+export const signInWithEmail = async (email: string, password: string) =>
+  await signInWithEmailAndPassword(auth, email, password);
+
+export const onAuthStateChangedListener = (
+  callback: NextOrObserver<UserFirebase>
+) => onAuthStateChanged(auth, callback);
+
+interface Options {
+  displayName?: string;
+  photoURL?: string;
+}
+
+export const createUserDoc = async (
+  user: UserFirebase,
+  options?: Options
+): Promise<QueryDocumentSnapshot<User>> => {
+  const userDocRef = doc(db, 'users', user.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (!userSnapshot.exists()) {
+    try {
+      const { displayName, email, uid } = user;
+      const banner = email?.charAt(0);
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        photoURL: `https://avatars.dicebear.com/api/initials/${banner}.svg`,
+        uid,
+        ...options,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-  throw new Error('user alredy exists');
+
+  return userSnapshot as QueryDocumentSnapshot<User>;
+};
+
+export const createCollectionAndDocuments = async (
+  collectionKey: string,
+  objectsToAdd: {}[]
+) => {
+  const batch = writeBatch(db);
+  const collectionRef = collection(db, collectionKey);
+
+  objectsToAdd.forEach((obj) => {
+    const newObjRef = doc(collectionRef);
+    batch.set(newObjRef, obj);
+  });
+
+  await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collections: QuerySnapshot) => {
+  const transformedCollections = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+
+  return transformedCollections.reduce((prev: any, next) => {
+    prev[next.title.toLowerCase()] = next;
+    return prev;
+  }, {});
 };

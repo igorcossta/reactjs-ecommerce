@@ -1,36 +1,41 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import React, { SyntheticEvent, useState } from 'react';
-import { auth, signInWithGoogle } from '../../firebase/firebase.config';
+import React, { useState } from 'react';
+import { signInWithEmail } from '../../firebase/firebase.utils';
 import Button from '../button';
 import Input from '../input';
 import './styles.scss';
 
+const defaultFormFields = {
+  email: '',
+  password: '',
+};
+
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const { email, password } = formFields;
 
-  const onSubmit = (e: SyntheticEvent): void => {
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {})
-      .catch((error) => alert('something went wrong with your authentication'));
-
-    setEmail('');
-    setPassword('');
-  };
-
-  const googleSignIn = () => {
-    signInWithGoogle()
-      .then((res) => {})
-      .catch((error) =>
-        alert('something went wrong with your google authentication')
-      );
-  };
-
-  const onChange = (e: React.FormEvent<HTMLInputElement>): void => {
     const { value, name } = e.currentTarget;
-    if (name === 'email') setEmail(value);
-    else setPassword(value);
+
+    setFormFields({ ...formFields, [name]: value });
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await signInWithEmail(email, password);
+    } catch (error: any) {
+      console.log(error);
+    }
+
+    resetFormFields();
+  };
+
+  const googleSignIn = () => {};
+
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
   };
 
   return (
@@ -38,7 +43,7 @@ const SignIn: React.FC = () => {
       <h2 className="title">I already have an account</h2>
       <span>Sign in with your email and password</span>
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} method="post">
         <Input
           name="email"
           type="email"
