@@ -10,11 +10,14 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
+  query,
   QueryDocumentSnapshot,
   QuerySnapshot,
   setDoc,
   writeBatch,
 } from 'firebase/firestore';
+import { CategoriesMap } from '../redux/category/category.interface';
 import { User } from '../redux/user/user.interface';
 import { auth, db } from './firebase.config';
 
@@ -91,4 +94,18 @@ export const convertCollectionsSnapshotToMap = (collections: QuerySnapshot) => {
     prev[next.title.toLowerCase()] = next;
     return prev;
   }, {});
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const categories = collection(db, 'collections');
+  const q = query(categories);
+
+  const qSnapshot = await getDocs(q);
+  const categoryMap = qSnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = { title, items };
+    return acc;
+  }, {} as CategoriesMap);
+
+  return categoryMap;
 };

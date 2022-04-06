@@ -13,7 +13,7 @@ interface Props {
   };
 }
 
-const CollectionItem: React.FC<Props> = ({ item }) => {
+const ProductCard: React.FC<Props> = ({ item }) => {
   const dispatch = useAppDispatch();
   const { name, price, imageUrl, id } = item;
   return (
@@ -40,4 +40,4 @@ const CollectionItem: React.FC<Props> = ({ item }) => {
   );
 };
 
-export default CollectionItem;
+export default ProductCard;
