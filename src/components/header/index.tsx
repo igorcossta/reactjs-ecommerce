@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
-import { auth } from '../../firebase/firebase.config';
+import { signOut } from '../../firebase/firebase.utils';
 import { useAppSelector } from '../../hooks/redux.hooks';
 import { selectCartHidden } from '../../redux/cart/cart.selector';
 import { selectCurrentUser } from '../../redux/user/user.selector';
@@ -12,6 +12,11 @@ import './styles.scss';
 const Header: React.FC = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const hidden = useAppSelector(selectCartHidden);
+
+  const logout = async () => {
+    await signOut();
+  };
+
   return (
     <div className="header">
       <Link className="logo-container" to="/">
@@ -24,8 +29,8 @@ const Header: React.FC = () => {
         <Link className="option" to="/contact">
           CONTACT
         </Link>
-        {currentUser?.uid ? (
-          <div className="option" onClick={() => auth.signOut()}>
+        {currentUser ? (
+          <div className="option" onClick={logout}>
             SIGN OUT
           </div>
         ) : (

@@ -1,19 +1,28 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import React, { SyntheticEvent, useState } from 'react';
-import { Profile } from '../../commom/user.type';
-import { auth } from '../../firebase/firebase.config';
-import { createUserProfile } from '../../firebase/firebase.utils';
+import React, { useState } from 'react';
+import { createUserDoc, signUpWithEmail } from '../../firebase/firebase.utils';
 import Button from '../button';
 import Input from '../input';
 import './styles.scss';
 
-const SignUp: React.FC = () => {
-  const [displayName, setDisplayName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setconfirmPassword] = useState<string>('');
+const defaultFormFields = {
+  displayName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
-  const onSubmit = async (e: SyntheticEvent) => {
+const SignUp: React.FC = () => {
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const { displayName, email, password, confirmPassword } = formFields;
+
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const { value, name } = e.currentTarget;
+
+    setFormFields({ ...formFields, [name]: value });
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -21,44 +30,25 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const { user } = userCredential;
+    try {
+      const { user } = await signUpWithEmail(email, password);
+      await createUserDoc(user, { displayName });
+    } catch (error: any) {
+      console.log(error);
+    }
 
-        const profile = {
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          uid: user.uid,
-        } as Profile;
-
-        await createUserProfile(profile, { displayName: displayName })
-          .then(() => {})
-          .catch((error) =>
-            alert('something went wrong saving your data on database')
-          );
-
-        setDisplayName('');
-        setEmail('');
-        setPassword('');
-        setconfirmPassword('');
-      })
-      .catch((error) => alert('something went wrong with your registration'));
+    resetFormFields();
   };
 
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { value, name } = e.currentTarget;
-    if (name === 'displayName') setDisplayName(value);
-    else if (name === 'email') setEmail(value);
-    else if (name === 'password') setPassword(value);
-    else if (name === 'confirmPassword') setconfirmPassword(value);
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
   };
 
   return (
     <div className="sign-up">
       <h2 className="title">I do not have an account</h2>
       <span>Sign up with your email and password</span>
-      <form className="sign-up-form" onSubmit={onSubmit}>
+      <form className="sign-up-form" onSubmit={onSubmit} method="post">
         <Input
           type="text"
           name="displayName"

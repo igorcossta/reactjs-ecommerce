@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react';
+import { updateProfile } from 'firebase/auth';
+import React, { useEffect, Fragment } from 'react';
 import { Outlet } from 'react-router-dom';
 import './app.scss';
-import { Profile } from './commom/user.type';
 import Header from './components/header';
-import { auth } from './firebase/firebase.config';
+import {
+  createUserDoc,
+  onAuthStateChangedListener,
+} from './firebase/firebase.utils';
 import { useAppDispatch } from './hooks/redux.hooks';
 import { setCurrentUser } from './redux/user/user.action';
 
@@ -11,30 +14,24 @@ const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = onAuthStateChangedListener(async (user) => {
       if (user) {
-        const credentials = {
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          uid: user.uid,
-        } as Profile;
-        dispatch(setCurrentUser(credentials));
+        const res = await createUserDoc(user);
+        await updateProfile(user, res.data());
+        dispatch(setCurrentUser(res.data()));
       } else {
-        dispatch(setCurrentUser({} as Profile));
+        dispatch(setCurrentUser(undefined));
       }
     });
 
-    return () => {
-      unsubscribe();
-    };
-  }, [dispatch]);
+    return unsubscribe;
+  }, []);
 
   return (
-    <div>
+    <Fragment>
       <Header />
       <Outlet />
-    </div>
+    </Fragment>
   );
 };
 

@@ -1,9 +1,7 @@
-import { Profile } from '../../commom/user.type';
 import { SET_CURRENT_USER } from './user.constant';
+import { User } from './user.interface';
 
-export const setCurrentUser = (props: Profile) => ({
+export const setCurrentUser = (user: User | undefined) => ({
   type: SET_CURRENT_USER,
-  payload: {
-    credentials: props,
-  },
+  payload: { user },
 });

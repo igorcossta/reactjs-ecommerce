@@ -1,12 +1,17 @@
-import { SET_CURRENT_USER, STATE } from './user.constant';
-import { Action } from './user.interface';
+import { SET_CURRENT_USER } from './user.constant';
+import { UserAction, UserReducerState } from './user.interface';
 
-const userReducer = (state = STATE, action: Action) => {
-  switch (action.type) {
+const STATE: UserReducerState = {
+  currentUser: undefined,
+};
+
+const userReducer = (state = STATE, action: UserAction): UserReducerState => {
+  const { type, payload } = action;
+  switch (type) {
     case SET_CURRENT_USER:
       return {
         ...state,
-        currentUser: action.payload.credentials,
+        currentUser: payload.user,
       };
     default:
       return state;
