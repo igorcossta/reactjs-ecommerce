@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createUserDoc, signUpWithEmail } from '../../firebase/firebase.utils';
 import Button from '../button';
 import Input from '../input';
-import './styles.scss';
+import { Container } from './styles';
 
 const defaultFormFields = {
   displayName: '',
@@ -45,10 +45,10 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="sign-up">
-      <h2 className="title">I do not have an account</h2>
+    <Container>
+      <h2>I do not have an account</h2>
       <span>Sign up with your email and password</span>
-      <form className="sign-up-form" onSubmit={onSubmit} method="post">
+      <form onSubmit={onSubmit} method="post">
         <Input
           type="text"
           name="displayName"
@@ -83,7 +83,7 @@ const SignUp: React.FC = () => {
         />
         <Button type="submit">SIGN UP</Button>
       </form>
-    </div>
+    </Container>
   );
 };
 

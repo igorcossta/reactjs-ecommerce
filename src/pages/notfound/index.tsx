@@ -1,10 +1,12 @@
 import React from 'react';
+import { ReactComponent as NotFoundSvg } from '../../assets/not-found.svg';
+import { Container } from './styles';
 
 const NotFound: React.FC = () => {
   return (
-    <div>
-      <h2>there's nothing here!</h2>
-    </div>
+    <Container>
+      <NotFoundSvg />
+    </Container>
   );
 };
 

@@ -6,7 +6,7 @@ import {
   categoriesIsLoading,
   selectCategory,
 } from '../../redux/category/category.selector';
-import './styles.scss';
+import { Container, Items } from './styles';
 import Spinner from '../spinner';
 
 const CategorySingle: React.FC = () => {
@@ -19,14 +19,14 @@ const CategorySingle: React.FC = () => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="collection-page">
-          <h2 className="title">{category?.title}</h2>
-          <div className="items">
+        <Container>
+          <h2>{category?.title}</h2>
+          <Items>
             {category?.items.map((item) => (
               <ProductCard key={item.id} item={item} />
             ))}
-          </div>
-        </div>
+          </Items>
+        </Container>
       )}
     </Fragment>
   );

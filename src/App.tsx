@@ -1,7 +1,7 @@
 import { updateProfile } from 'firebase/auth';
 import React, { useEffect, Fragment } from 'react';
 import { Outlet } from 'react-router-dom';
-import './app.scss';
+import GlobalStyles from './styles';
 import Header from './components/header';
 import {
   createUserDoc,
@@ -31,6 +31,8 @@ const App: React.FC = () => {
     <Fragment>
       <Header />
       <Outlet />
+
+      <GlobalStyles />
     </Fragment>
   );
 };

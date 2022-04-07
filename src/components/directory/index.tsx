@@ -1,6 +1,6 @@
 import React from 'react';
 import MenuItem from '../menu-item';
-import './styles.scss';
+import { Container } from './styles';
 import { useAppSelector } from '../../hooks/redux.hooks';
 import { selectDirectories } from '../../redux/directory/directory.selector';
 
@@ -8,7 +8,7 @@ const Directory: React.FC = () => {
   const directories = useAppSelector(selectDirectories);
 
   return (
-    <div className="directory-menu">
+    <Container>
       {directories.map(({ id, title, imageUrl, size, linkUrl }) => (
         <MenuItem
           key={id}
@@ -18,7 +18,7 @@ const Directory: React.FC = () => {
           linkUrl={linkUrl}
         />
       ))}
-    </div>
+    </Container>
   );
 };
 
