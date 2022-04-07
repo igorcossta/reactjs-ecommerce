@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppDispatch } from '../../hooks/redux.hooks';
 import { addItemToCart } from '../../redux/cart/cart.action';
 import Button from '../button';
-import './styles.scss';
+import { Container, Image, Footer } from './styles';
 
 interface Props {
   item: {
@@ -17,17 +17,16 @@ const ProductCard: React.FC<Props> = ({ item }) => {
   const dispatch = useAppDispatch();
   const { name, price, imageUrl, id } = item;
   return (
-    <div className="collection-item">
-      <div
-        className="image"
+    <Container>
+      <Image
         style={{
           backgroundImage: `url(${imageUrl})`,
         }}
       />
-      <div className="collection-footer">
-        <span className="name">{name}</span>
-        <span className="price">${price}</span>
-      </div>
+      <Footer>
+        <span>{name}</span>
+        <span>${price}</span>
+      </Footer>
       <Button
         inverted
         onClick={() =>
@@ -36,7 +35,7 @@ const ProductCard: React.FC<Props> = ({ item }) => {
       >
         ADD TO CART
       </Button>
-    </div>
+    </Container>
   );
 };
 

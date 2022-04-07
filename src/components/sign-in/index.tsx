@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { signInWithEmail } from '../../firebase/firebase.utils';
 import Button from '../button';
 import Input from '../input';
-import './styles.scss';
+import { Container, Buttons } from './styles';
 
 const defaultFormFields = {
   email: '',
@@ -39,8 +39,8 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="sign-in">
-      <h2 className="title">I already have an account</h2>
+    <Container>
+      <h2>I already have an account</h2>
       <span>Sign in with your email and password</span>
 
       <form onSubmit={onSubmit} method="post">
@@ -60,16 +60,16 @@ const SignIn: React.FC = () => {
           handleChange={onChange}
           label="password"
         />
-        <div className="buttons">
+        <Buttons>
           <Button type="submit" value="submit form">
             Sign In
           </Button>
           <Button isGoogleSignIn onClick={googleSignIn}>
             Sign In with Google
           </Button>
-        </div>
+        </Buttons>
       </form>
-    </div>
+    </Container>
   );
 };
 

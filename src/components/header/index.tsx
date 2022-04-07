@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { signOut } from '../../firebase/firebase.utils';
 import { useAppSelector } from '../../hooks/redux.hooks';
@@ -7,7 +6,7 @@ import { selectCartHidden } from '../../redux/cart/cart.selector';
 import { selectCurrentUser } from '../../redux/user/user.selector';
 import Dropdown from '../cart-dropdown';
 import CartIcon from '../cart-icon';
-import './styles.scss';
+import { LogoContainer, Navigation, NavLink, NavLinks } from './styles';
 
 const Header: React.FC = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -18,30 +17,22 @@ const Header: React.FC = () => {
   };
 
   return (
-    <div className="header">
-      <Link className="logo-container" to="/">
+    <Navigation>
+      <LogoContainer to="/">
         <Logo />
-      </Link>
-      <div className="options">
-        <Link className="option" to="/shop">
-          SHOP
-        </Link>
-        <Link className="option" to="/contact">
-          CONTACT
-        </Link>
+      </LogoContainer>
+      <NavLinks>
+        <NavLink to="/shop">SHOP</NavLink>
+        <NavLink to="/contact">CONTACT</NavLink>
         {currentUser ? (
-          <div className="option" onClick={logout}>
-            SIGN OUT
-          </div>
+          <div onClick={logout}>SIGN OUT</div>
         ) : (
-          <Link className="option" to="/signin">
-            SIGN IN
-          </Link>
+          <NavLink to="/signin">SIGN IN</NavLink>
         )}
         <CartIcon />
-      </div>
+      </NavLinks>
       {hidden ? null : <Dropdown />}
-    </div>
+    </Navigation>
   );
 };
 
