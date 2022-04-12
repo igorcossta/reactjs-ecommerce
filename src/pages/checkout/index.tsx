@@ -2,52 +2,60 @@ import React, { Fragment } from 'react';
 import CheckoutItem from '../../components/checkout-item';
 import StripeButton from '../../components/stripe-button';
 import { useAppSelector } from '../../hooks/redux.hooks';
+import { ReactComponent as EmptyCart } from '../../assets/empty_cart.svg';
 import {
   selectCartItems,
   selectCartTotal,
 } from '../../redux/cart/cart.selector';
-import './styles.scss';
+import { Container, Header, Title, Total, Warning } from './styles';
 
 const CheckoutPage: React.FC = () => {
   const cartItems = useAppSelector(selectCartItems);
   const cartTotal = useAppSelector(selectCartTotal);
 
   return (
-    <div className="checkout-page">
-      <div className="checkout-header">
-        <div className="header-block">
-          <span>PRODUCT</span>
-        </div>
-        <div className="header-block">
-          <span>DESCRIPTION</span>
-        </div>
-        <div className="header-block">
-          <span>QUANTITY</span>
-        </div>
-        <div className="header-block">
-          <span>PRICE</span>
-        </div>
-        <div className="header-block">
-          <span>REMOVE</span>
-        </div>
-      </div>
-      {cartItems.map((cartItem) => (
-        <CheckoutItem key={cartItem.id} cartItem={cartItem} />
-      ))}
-      <div className="total">
-        <span>${cartTotal}</span>
-      </div>
-      {cartItems.length >= 1 && (
+    <Container>
+      {cartItems.length >= 1 ? (
         <Fragment>
-          <div className="test-warning">
-            *Please use the following test credit card for payments*
-            <br />
-            4242 4242 4242 4242 - Exp 01/23 - CVV 123
-          </div>
-          <StripeButton price={cartTotal} />
+          <Header>
+            <Title>
+              <span>Product</span>
+            </Title>
+            <Title>
+              <span>Description</span>
+            </Title>
+            <Title>
+              <span>Quantity</span>
+            </Title>
+            <Title>
+              <span>Price</span>
+            </Title>
+            <Title>
+              <span></span>
+            </Title>
+          </Header>
+          {cartItems.map((cartItem) => (
+            <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+          ))}
+          <Total>
+            <span>${cartTotal}</span>
+          </Total>
+          <Fragment>
+            <Warning>
+              *Please use the following test credit card for payments*
+              <br />
+              4242 4242 4242 4242 - Exp 01/23 - CVV 123
+            </Warning>
+            <StripeButton price={cartTotal} />
+          </Fragment>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <h3>Your cart is empty</h3>
+          <EmptyCart />
         </Fragment>
       )}
-    </div>
+    </Container>
   );
 };
 
