@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import CheckoutItem from '../../components/checkout-item';
-import StripeButton from '../../components/stripe-button';
 import { useAppSelector } from '../../hooks/redux.hooks';
 import { ReactComponent as EmptyCart } from '../../assets/empty_cart.svg';
 import {
@@ -8,6 +7,7 @@ import {
   selectCartTotal,
 } from '../../redux/cart/cart.selector';
 import { Container, Header, Title, Total, Warning } from './styles';
+import PaymentForm from '../../components/payment-form';
 
 const CheckoutPage: React.FC = () => {
   const cartItems = useAppSelector(selectCartItems);
@@ -40,14 +40,7 @@ const CheckoutPage: React.FC = () => {
           <Total>
             <span>${cartTotal}</span>
           </Total>
-          <Fragment>
-            <Warning>
-              *Please use the following test credit card for payments*
-              <br />
-              4242 4242 4242 4242 - Exp 01/23 - CVV 123
-            </Warning>
-            <StripeButton price={cartTotal} />
-          </Fragment>
+          <PaymentForm />
         </Fragment>
       ) : (
         <Fragment>

@@ -4,12 +4,14 @@ import './styles.scss';
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   isGoogleSignIn?: boolean;
   inverted?: boolean;
+  isLoading?: boolean;
 }
 
 const Button: React.FC<Props> = ({
   children,
   isGoogleSignIn,
   inverted,
+  isLoading,
   ...otherProps
 }) => {
   return (
@@ -17,9 +19,10 @@ const Button: React.FC<Props> = ({
       className={`${inverted ? 'inverted' : ''} ${
         isGoogleSignIn ? 'google-sign-in' : ''
       } custom-button`}
+      disabled={isLoading}
       {...otherProps}
     >
-      {children}
+      {isLoading ? <div className="button-spinner"></div> : children}
     </button>
   );
 };
