@@ -1,5 +1,3 @@
-import { getCategoriesAndDocuments } from '../../firebase/firebase.utils';
-import { TypedDispatch } from '../store';
 import {
   FETCH_CATEGORY_FAILED,
   FETCH_CATEGORY_START,
@@ -21,13 +19,3 @@ export const fetchCategoriesFailed = () => ({
   type: FETCH_CATEGORY_FAILED,
   payload: {},
 });
-
-export const fetchCategoriesAsync = () => async (dispatch: TypedDispatch) => {
-  dispatch(fetchCategoriesStart());
-  try {
-    const categories = await getCategoriesAndDocuments();
-    dispatch(fetchCategoriesSuccess(categories));
-  } catch (error) {
-    dispatch(fetchCategoriesFailed());
-  }
-};

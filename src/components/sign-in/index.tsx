@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { signInWithEmail } from '../../firebase/firebase.utils';
+import { useAppDispatch } from '../../hooks/redux.hooks';
+import { emailSignInStart } from '../../redux/user/user.action';
 import Button from '../button';
 import Input from '../input';
 import { Container, Buttons } from './styles';
@@ -10,6 +11,7 @@ const defaultFormFields = {
 };
 
 const SignIn: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -24,7 +26,7 @@ const SignIn: React.FC = () => {
     e.preventDefault();
 
     try {
-      await signInWithEmail(email, password);
+      dispatch(emailSignInStart(email, password));
     } catch (error: any) {
       console.log(error);
     }
