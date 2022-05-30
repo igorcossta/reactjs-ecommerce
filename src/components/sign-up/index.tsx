@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { createUserDoc, signUpWithEmail } from '../../firebase/firebase.utils';
+import { useAppDispatch } from '../../hooks/redux.hooks';
+import { signUpStart } from '../../redux/user/user.action';
 import Button from '../button';
 import Input from '../input';
 import { Container } from './styles';
@@ -12,6 +14,7 @@ const defaultFormFields = {
 };
 
 const SignUp: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
@@ -31,8 +34,7 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const { user } = await signUpWithEmail(email, password);
-      await createUserDoc(user, { displayName });
+     dispatch(signUpStart(email, password, displayName))
     } catch (error: any) {
       console.log(error);
     }
