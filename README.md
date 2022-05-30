@@ -15,7 +15,7 @@ Category Page             |  Login Page
 <br />
 
 <p align="center">
-  Click <a href="https://crwn-cossta.herokuapp.com" target="_blank">HERE</a> to view the live preview
+  Click <a href="https://lighthearted-fairy-6e68f0.netlify.app" target="_blank">HERE</a> to view the live preview
 </p>
   
 <h2 align="center">⚠️ Notes</h2>
