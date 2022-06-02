@@ -20,7 +20,7 @@ const CategorySingle: React.FC = () => {
         <Spinner />
       ) : (
         <Container>
-          <h2>{categoryId?.toUpperCase()}</h2>
+          <h1>{categoryId?.toUpperCase()}</h1>
           <Items>
             {category &&
               category.map((i) => <ProductCard key={i.id} item={i} />)}

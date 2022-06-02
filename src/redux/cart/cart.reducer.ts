@@ -1,40 +1,50 @@
+import { AnyAction } from 'redux';
 import {
-  CART_ADD_ITEM,
-  CART_REMOVE_ITEM,
-  DECREASE_ITEM_QUANTITY,
-  STATE,
-  TOGGLE_CART_HIDDEN,
-} from './cart.constant';
-import { Action, CartState } from './cart.interface';
-import { addItemToCart, decreaseItemQuantity } from './cart.utils';
+  toggleCart,
+  addItemToCart,
+  removeItemFromCart,
+  decreaseItemQuantity,
+} from './cart.action';
+import { Item } from './cart.constant';
+import { addItem, decreaseItem, removeItem } from './cart.utils';
 
-const cartReducer = (state = STATE, action: Action): CartState => {
-  switch (action.type) {
-    case TOGGLE_CART_HIDDEN:
-      return { ...state, hidden: !state.hidden };
-    case CART_ADD_ITEM:
-      return {
-        ...state,
-        cartItems: addItemToCart(state.cartItems, action.payload.cartItem),
-      };
-    case CART_REMOVE_ITEM:
-      return {
-        ...state,
-        cartItems: state.cartItems.filter(
-          (cartItem) => cartItem.id !== action.payload.cartItem.id
-        ),
-      };
-    case DECREASE_ITEM_QUANTITY:
-      return {
-        ...state,
-        cartItems: decreaseItemQuantity(
-          state.cartItems,
-          action.payload.cartItem
-        ),
-      };
-    default:
-      return state;
+export type CartState = {
+  isCartHidden: boolean;
+  cartItems: Item[];
+};
+
+export const STATE: CartState = {
+  isCartHidden: true,
+  cartItems: [],
+};
+
+const cartReducer = (state = STATE, action: AnyAction): CartState => {
+  if (toggleCart.match(action)) {
+    return { ...state, isCartHidden: !state.isCartHidden };
   }
+
+  if (addItemToCart.match(action)) {
+    return {
+      ...state,
+      cartItems: addItem(state.cartItems, action.payload),
+    };
+  }
+
+  if (removeItemFromCart.match(action)) {
+    return {
+      ...state,
+      cartItems: removeItem(state.cartItems, action.payload),
+    };
+  }
+
+  if (decreaseItemQuantity.match(action)) {
+    return {
+      ...state,
+      cartItems: decreaseItem(state.cartItems, action.payload),
+    };
+  }
+
+  return state;
 };
 
 export default cartReducer;

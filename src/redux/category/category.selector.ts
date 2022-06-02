@@ -23,7 +23,7 @@ export const selectCategoriesMap = createSelector(
 
 export const selectCategory = (category: string = 'sneackers') =>
   createSelector(
-    selectCategoriesMap,
+    [selectCategoriesMap],
     (categories: CategoryMap) => categories[category]
   );
 

@@ -5,11 +5,11 @@ import {
   decreaseItemQuantity,
   removeItemFromCart,
 } from '../../redux/cart/cart.action';
-import { CartItem } from '../../redux/cart/cart.interface';
+import { Item } from '../../redux/cart/cart.constant';
 import './styles.scss';
 
 interface Props {
-  cartItem: CartItem;
+  cartItem: Item;
 }
 
 const CheckoutItem: React.FC<Props> = ({ cartItem }) => {

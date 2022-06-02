@@ -4,9 +4,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  > h2 {
-    font-size: 38px;
-    padding-bottom: 10px;
+  > h1 {
+    padding-bottom: 8px;
     text-align: center;
   }
 `;

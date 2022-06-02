@@ -18,10 +18,7 @@ const STATE: CategoriesState = {
   error: null,
 };
 
-const categoryReducer = (
-  state = STATE,
-  action = {} as AnyAction
-): CategoriesState => {
+const categoryReducer = (state = STATE, action: AnyAction): CategoriesState => {
   if (fetchCategoriesStart.match(action)) {
     return { ...state, isLoading: true };
   }
