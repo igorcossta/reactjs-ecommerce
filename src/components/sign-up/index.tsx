@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { createUserDoc, signUpWithEmail } from '../../firebase/firebase.utils';
 import { useAppDispatch } from '../../hooks/redux.hooks';
 import { signUpStart } from '../../redux/user/user.action';
 import Button from '../button';
@@ -34,7 +33,7 @@ const SignUp: React.FC = () => {
     }
 
     try {
-     dispatch(signUpStart(email, password, displayName))
+      dispatch(signUpStart(email, password, displayName));
     } catch (error: any) {
       console.log(error);
     }

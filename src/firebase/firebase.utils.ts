@@ -4,7 +4,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut as signOutFirebase,
-  User as UserFirebase,
+  User,
 } from 'firebase/auth';
 import {
   collection,
@@ -17,7 +17,8 @@ import {
   setDoc,
   writeBatch,
 } from 'firebase/firestore';
-import { User } from '../redux/user/user.interface';
+import { Category } from '../redux/category/category.constant';
+import { AppUser } from '../redux/user/user.constant';
 import { auth, db } from './firebase.config';
 
 export const signOut = () => signOutFirebase(auth);
@@ -28,9 +29,8 @@ export const signUpWithEmail = async (email: string, password: string) =>
 export const signInWithEmail = async (email: string, password: string) =>
   await signInWithEmailAndPassword(auth, email, password);
 
-export const onAuthStateChangedListener = (
-  callback: NextOrObserver<UserFirebase>
-) => onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) =>
+  onAuthStateChanged(auth, callback);
 
 interface Options {
   displayName?: string;
@@ -38,9 +38,9 @@ interface Options {
 }
 
 export const createUserDoc = async (
-  user: UserFirebase,
+  user: User,
   options?: Options
-): Promise<QueryDocumentSnapshot<User>> => {
+): Promise<QueryDocumentSnapshot<AppUser>> => {
   const userDocRef = doc(db, 'users', user.uid);
   const userSnapshot = await getDoc(userDocRef);
 
@@ -60,7 +60,8 @@ export const createUserDoc = async (
     }
   }
 
-  return userSnapshot as QueryDocumentSnapshot<User>;
+  const updatedSnapshot = await getDoc(userDocRef);
+  return updatedSnapshot as QueryDocumentSnapshot<AppUser>;
 };
 
 export const createCollectionAndDocuments = async (
@@ -95,15 +96,15 @@ export const convertCollectionsSnapshotToMap = (collections: QuerySnapshot) => {
   }, {});
 };
 
-export const getCategoriesAndDocuments = async () => {
+export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
   const categories = collection(db, 'collections');
   const q = query(categories);
 
   const qSnapshot = await getDocs(q);
-  return qSnapshot.docs.map((i) => i.data());
+  return qSnapshot.docs.map((i) => i.data() as Category);
 };
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
       auth,

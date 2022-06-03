@@ -9,8 +9,8 @@ import { Item } from './cart.constant';
 import { addItem, decreaseItem, removeItem } from './cart.utils';
 
 export type CartState = {
-  isCartHidden: boolean;
-  cartItems: Item[];
+  readonly isCartHidden: boolean;
+  readonly cartItems: Item[];
 };
 
 export const STATE: CartState = {
