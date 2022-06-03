@@ -1,11 +1,10 @@
 import React from 'react';
 import MenuItem from '../menu-item';
 import { Container } from './styles';
-import { useAppSelector } from '../../hooks/redux.hooks';
-import { selectDirectories } from '../../redux/directory/directory.selector';
+import STATE from '../../redux/directory/directory.data';
 
 const Directory: React.FC = () => {
-  const directories = useAppSelector(selectDirectories);
+  const directories = STATE;
 
   return (
     <Container>

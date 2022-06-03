@@ -7,19 +7,22 @@ import {
   fetchCategoriesFailed,
 } from './category.action';
 
-import { FETCH_CATEGORY_START } from './category.constant';
+import { CATEGORIES_ACTION_TYPES } from './category.constant';
 
 export function* fetchCategoriesAsync() {
   try {
     const categories = yield call(getCategoriesAndDocuments);
     yield put(fetchCategoriesSuccess(categories));
   } catch (error) {
-    yield put(fetchCategoriesFailed());
+    yield put(fetchCategoriesFailed(error));
   }
 }
 
 export function* onFetchCategories() {
-  yield takeLatest(FETCH_CATEGORY_START, fetchCategoriesAsync);
+  yield takeLatest(
+    CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START,
+    fetchCategoriesAsync
+  );
 }
 
 export function* categoriesSaga() {

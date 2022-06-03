@@ -30,7 +30,6 @@ const Header: React.FC = () => {
       </LogoContainer>
       <NavLinks>
         <NavLink to="/shop">SHOP</NavLink>
-        <NavLink to="/contact">CONTACT</NavLink>
         {currentUser ? (
           <SignOut onClick={logout}>SIGN OUT</SignOut>
         ) : (

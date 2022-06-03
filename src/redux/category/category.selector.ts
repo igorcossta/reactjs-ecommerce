@@ -1,20 +1,31 @@
 import { createSelector } from 'reselect';
 import { RootState } from '../store';
+import { CategoryMap } from './category.constant';
+import { CategoriesState } from './category.reducer';
 
-import memoize from 'lodash.memoize';
+const selectCategoryReducer = (state: RootState): CategoriesState =>
+  state.category;
 
-const selectCategoryReducer = (state: RootState) => state.category;
-
-export const selectCategoriesMap = createSelector(
+export const selectCategories = createSelector(
   [selectCategoryReducer],
   (categorySlice) => categorySlice.categories
 );
 
-export const selectCategory = memoize((category: string | undefined) =>
-  createSelector([selectCategoriesMap], (categories) => {
-    if (category) return categories?.[category];
-  })
+export const selectCategoriesMap = createSelector(
+  [selectCategories],
+  (categories): CategoryMap =>
+    categories.reduce((acc, category) => {
+      const { title, items } = category;
+      acc[title.toLowerCase()] = items;
+      return acc;
+    }, {} as CategoryMap)
 );
+
+export const selectCategory = (category: string = 'sneackers') =>
+  createSelector(
+    [selectCategoriesMap],
+    (categories: CategoryMap) => categories[category]
+  );
 
 export const categoriesIsLoading = createSelector(
   [selectCategoryReducer],

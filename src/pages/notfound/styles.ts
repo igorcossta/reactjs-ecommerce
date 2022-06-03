@@ -1,13 +1,18 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
-  > svg {
-    height: 320px;
-    width: 320px;
+  h1 {
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  a {
+    font-size: 1.333rem;
+    border-bottom: 1px solid #c1c1c1;
   }
 `;

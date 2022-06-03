@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import CheckoutItem from '../../components/checkout-item';
 import { useAppSelector } from '../../hooks/redux.hooks';
-import { ReactComponent as EmptyCart } from '../../assets/empty_cart.svg';
 import {
   selectCartItems,
   selectCartTotal,
 } from '../../redux/cart/cart.selector';
-import { Container, Header, Title, Total, Warning } from './styles';
+import { Container, Header, Title, Total } from './styles';
 import PaymentForm from '../../components/payment-form';
+import { Link } from 'react-router-dom';
 
 const CheckoutPage: React.FC = () => {
   const cartItems = useAppSelector(selectCartItems);
@@ -44,8 +44,10 @@ const CheckoutPage: React.FC = () => {
         </Fragment>
       ) : (
         <Fragment>
-          <h3>Your cart is empty</h3>
-          <EmptyCart />
+          <h1>Your cart is empty!</h1>
+          <Link to={'/'} replace>
+            Shop new clothes
+          </Link>
         </Fragment>
       )}
     </Container>

@@ -2,14 +2,14 @@ import React from 'react';
 import { useAppSelector } from '../../hooks/redux.hooks';
 import {
   categoriesIsLoading,
-  selectCategoriesMap,
+  selectCategories,
 } from '../../redux/category/category.selector';
 import Category from '../category';
 import Spinner from '../spinner';
 import { Container } from './styles';
 
 const CategoryContainer: React.FC = () => {
-  const categories = useAppSelector(selectCategoriesMap);
+  const categories = useAppSelector(selectCategories);
   const isLoading = useAppSelector(categoriesIsLoading);
 
   return (
@@ -17,8 +17,8 @@ const CategoryContainer: React.FC = () => {
       {isLoading ? (
         <Spinner />
       ) : (
-        Object.keys(categories).map((title) => {
-          const { items } = categories[title];
+        categories.map((i) => {
+          const { title, items } = i;
           return <Category key={title} title={title} items={items} />;
         })
       )}

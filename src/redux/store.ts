@@ -1,10 +1,4 @@
-import {
-  createStore,
-  applyMiddleware,
-  compose,
-  AnyAction,
-  Middleware,
-} from 'redux';
+import { createStore, applyMiddleware, compose, Middleware } from 'redux';
 import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './root-saga';

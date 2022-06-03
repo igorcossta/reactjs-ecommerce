@@ -1,11 +1,14 @@
 import React from 'react';
-import { ReactComponent as NotFoundSvg } from '../../assets/not-found.svg';
+import { Link } from 'react-router-dom';
 import { Container } from './styles';
 
 const NotFound: React.FC = () => {
   return (
     <Container>
-      <NotFoundSvg />
+      <h1>Unfortunately the page does not exist!</h1>
+      <Link to={'/'} replace>
+        Shop new clothes
+      </Link>
     </Container>
   );
 };
