@@ -9,8 +9,12 @@ import {
 import { Container, Items } from './styles';
 import Spinner from '../spinner';
 
+type CategoryParams = {
+  categoryId: string;
+};
+
 const CategorySingle: React.FC = () => {
-  const { categoryId } = useParams();
+  const { categoryId } = useParams<keyof CategoryParams>() as CategoryParams;
   const category = useAppSelector(selectCategory(categoryId));
   const isLoading = useAppSelector(categoriesIsLoading);
 

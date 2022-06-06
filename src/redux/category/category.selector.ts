@@ -21,7 +21,7 @@ export const selectCategoriesMap = createSelector(
     }, {} as CategoryMap)
 );
 
-export const selectCategory = (category: string = 'sneackers') =>
+export const selectCategory = (category: string) =>
   createSelector(
     [selectCategoriesMap],
     (categories: CategoryMap) => categories[category]
