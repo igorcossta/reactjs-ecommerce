@@ -8,7 +8,7 @@
 > A cutting-edge Ecommerce platform meticulously crafted using React, seamlessly integrated with the power of Stripe for secure and efficient payment processing.
 
 <p align="right">
-    <a href="https://example.com">View Demo</a>
+    <a href="https://lighthearted-fairy-6e68f0.netlify.app">View Demo</a>
     ·
     <a href="https://example.com">Report Bug</a>
     ·
